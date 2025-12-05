@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Assets.Scripts.Player
 {
-    public class PlayerPropManager : NetworkBehaviour
+    public class PlayerPropManager : MonoBehaviour
     {
         [Header("Settings------------------------------------------------------------------------")]
         private PlayerStateManager playerStateManager;
@@ -86,7 +86,7 @@ namespace Assets.Scripts.Player
             }
         }
 
-        [ServerRpc]
+        
         private void SendPositionToServerRpc(Vector3 clientPosition, Vector3 newVelocity, Quaternion clientRotation)
         {
             // Synchronisiere die Bewegung nur der anderen Clients
@@ -94,10 +94,9 @@ namespace Assets.Scripts.Player
         }
 
         // ClientRpc: Server sendet Bewegungsergebnisse an alle Clients
-        [ClientRpc]
+        
         private void UpdateMovementClientRpc(Vector3 newPosition, Vector3 newVelocity, Quaternion newRotation)
         {
-            if (IsOwner) return;
             rb.linearVelocity = newVelocity;
             transformGameObject.transform.SetPositionAndRotation(newPosition, newRotation);
         }
@@ -141,8 +140,7 @@ namespace Assets.Scripts.Player
 
                 if (Physics.Raycast(ray, out RaycastHit hit, transformRange) && hit.collider.TryGetComponent<TransformableObject>(out var transformableObject))
                 {
-                    NetworkObject targetNetworkObject = transformableObject.transformationPrefab.GetComponent<NetworkObject>();
-                    TransformPlayerIntoObjectServerRpc(targetNetworkObject.NetworkObjectId);
+                   TransformIntoObject(transformableObject.transformationPrefab);
                 }
             }
 
@@ -170,24 +168,9 @@ namespace Assets.Scripts.Player
                 yield return null; // Warte bis zum nächsten Frame
             }
         }
+        
 
-        [ServerRpc]
-        private void TransformPlayerIntoObjectServerRpc(ulong targetNetworkObjectId)
-        {
-            RpcTransformPlayerClientRPC(targetNetworkObjectId);  // Auf allen Clients ausführen
-        }
-
-        // Client-RPC, um die Transformation zu synchronisieren
-        [ClientRpc]
-        private void RpcTransformPlayerClientRPC(ulong targetNetworkObjectId)
-        {
-            // Suche das GameObject anhand der NetworkObject-ID
-            NetworkObject targetNetworkObject = NetworkManager.Singleton.SpawnManager.SpawnedObjects[targetNetworkObjectId];
-            if (targetNetworkObject != null)
-            {
-                TransformIntoObject(targetNetworkObject.gameObject);
-            }
-        }
+        
         private void TransformIntoObject(GameObject transformationPrefab)
         {
             GetComponent<CharacterController>().enabled = false;
@@ -229,14 +212,14 @@ namespace Assets.Scripts.Player
             }
         }
 
-        [ServerRpc(RequireOwnership = false)]
+        
         public void TransformPlayerIntoPlayerServerRpc()
         {
             TransformPlayerIntoPlayerClientRpc();  // Auf allen Clients ausführen
         }
 
         // Client-RPC, um die Transformation zu synchronisieren
-        [ClientRpc]
+        
         private void TransformPlayerIntoPlayerClientRpc()
         {
             TransformIntoPlayer();

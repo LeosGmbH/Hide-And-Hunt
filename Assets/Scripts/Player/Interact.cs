@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Assets.Scripts.Player
 {
-    public class Interact : NetworkBehaviour
+    public class Interact : MonoBehaviour
     {
         private ulong survivorNetworkId;
         [SerializeField] private Camera playerCamera;
@@ -57,12 +57,12 @@ namespace Assets.Scripts.Player
                 Debug.Log("Kein Treffer.");
             }
         }
-        [ServerRpc(RequireOwnership = false)]
+        
         private void HelpSurvivorServerRpc(ulong survivorNetworkId)
         {
             SafeSurvivorClientRpc(survivorNetworkId);
         }
-        [ClientRpc]
+        
         private void SafeSurvivorClientRpc(ulong survivorNetworkId)
         {
             NetworkObject survivorObject = NetworkManager.Singleton.SpawnManager.SpawnedObjects[survivorNetworkId];
@@ -70,7 +70,7 @@ namespace Assets.Scripts.Player
 
             if (survivorStateManager != null)
             {
-                Debug.Log("Heal client rpc in interact ausgeführt");
+                Debug.Log("Heal client rpc in interact ausgefï¿½hrt");
                 survivorStateManager.Heal();
             }
         }

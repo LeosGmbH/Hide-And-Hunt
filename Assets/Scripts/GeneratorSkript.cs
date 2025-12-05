@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 namespace Assets.Scripts
 {
-    public class GeneratorSkript : NetworkBehaviour
+    public class GeneratorSkript : MonoBehaviour
     {
         [SerializeField] private float repairSpeedPerPlayer = 5f; // Fortschritt pro Sekunde und Spieler
         [SerializeField] private float maxProgress = 100f;
@@ -36,7 +36,7 @@ namespace Assets.Scripts
 
         private void Update()
         {
-            if (IsServer && RepairingPlayers.Value > 0 && !IsRepaired.Value)
+            if ( RepairingPlayers.Value > 0 && !IsRepaired.Value)
             {
                 Progress.Value += repairSpeedPerPlayer * RepairingPlayers.Value * Time.deltaTime;
 
@@ -48,7 +48,7 @@ namespace Assets.Scripts
                 }
             }
 
-            if (IsServer && Progress.Value > 0 && RepairingPlayers.Value == 0 && !IsRepaired.Value) //progress rückgängig machen
+            if ( Progress.Value > 0 && RepairingPlayers.Value == 0 && !IsRepaired.Value) //progress rï¿½ckgï¿½ngig machen
             {
                 DecayProgress();
             }
@@ -62,7 +62,7 @@ namespace Assets.Scripts
 
             }
         }
-        [ClientRpc]
+        
         private void SetCanvasVisibilityClientRpc(bool isVisible)
         {
             progressBarCanvas.gameObject.SetActive(isVisible);
@@ -77,7 +77,7 @@ namespace Assets.Scripts
             }
         }
 
-        [ServerRpc(RequireOwnership = false)]
+        
         public void StartRepairingServerRpc(ServerRpcParams rpcParams = default)
         {
             if (!IsRepaired.Value)
@@ -91,12 +91,12 @@ namespace Assets.Scripts
                 UpdateRepairingPlayersClientRpc(RepairingPlayers.Value);
             }
         }
-        [ClientRpc]
+        
         private void UpdateRepairingPlayersClientRpc(int currentRepairingPlayers)
         {
             RepairingPlayers.Value = currentRepairingPlayers;
         }
-        [ServerRpc(RequireOwnership = false)]
+        
         public void StopRepairingServerRpc(ServerRpcParams rpcParams = default)
         {
             if (RepairingPlayers.Value > 0)
@@ -111,7 +111,7 @@ namespace Assets.Scripts
             Debug.Log("Generator wurde repariert!");
         }
 
-        [ClientRpc]
+        
         private void UpdateProgressBarClientRpc(float progress)
         {
             if (progressBarSlider != null)

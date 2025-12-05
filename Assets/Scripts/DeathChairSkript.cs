@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 namespace Assets.Scripts
 {
-    public class DeathChairSkript : NetworkBehaviour
+    public class DeathChairSkript : MonoBehaviour
     {
         [SerializeField] private float dieSpeed = 20f; // Fortschritt pro Sekunde und Spieler
         [SerializeField] private float maxProgress = 100f;
@@ -33,7 +33,7 @@ namespace Assets.Scripts
 
         private void Update()
         {
-            if (IsServer && DieingPlayer.Value && !IsDead.Value)
+            if ( DieingPlayer.Value && !IsDead.Value)
             {
                 Progress.Value += dieSpeed * Time.deltaTime;
 
@@ -45,21 +45,21 @@ namespace Assets.Scripts
                 }
             }
 
-            if (IsServer && Progress.Value > 0 && !DieingPlayer.Value && !IsDead.Value) //progress rückgängig machen
+            if ( Progress.Value > 0 && !DieingPlayer.Value && !IsDead.Value) //progress rï¿½ckgï¿½ngig machen
             {
                 Progress.Value = 0;
                 SetCanvasVisibilityClientRpc(false);
             }
 
         }
-        [ClientRpc]
+        
         private void SetCanvasVisibilityClientRpc(bool isVisible)
         {
             progressBarCanvas.gameObject.SetActive(isVisible);
         }
 
 
-        [ServerRpc(RequireOwnership = false)]
+        
         public void StartDieingServerRpc(ulong survivorNetworkId, ServerRpcParams rpcParams = default)
         {
             if (!IsDead.Value)
@@ -70,18 +70,18 @@ namespace Assets.Scripts
                 UpdateDieingPlayersClientRpc(DieingPlayer.Value);
             }
         }
-        [ClientRpc]
+        
         private void UpdateDieingPlayersClientRpc(bool isplayerOnChair)
         {
             DieingPlayer.Value = isplayerOnChair;
         }
-        [ServerRpc(RequireOwnership = false)]
+        
         public void ResetDeathChairServerRpc()
         {
             ResetDeathChairClientRpc();
             SetCanvasVisibilityClientRpc(false);
         }
-        [ClientRpc]
+        
         public void ResetDeathChairClientRpc()
         {
             IsDead.Value = false;
@@ -108,7 +108,7 @@ namespace Assets.Scripts
         }
 
 
-        [ClientRpc]
+        
         private void UpdateProgressBarClientRpc(float progress)
         {
             if (progressBarSlider != null)

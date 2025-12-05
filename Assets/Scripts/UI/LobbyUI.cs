@@ -23,17 +23,14 @@ public class LobbyUI : MonoBehaviour {
 
     private void Awake() {
         mainMenuButton.onClick.AddListener(() => {
-            GameLobby.Instance.DisconnectAndLeaveLobby();
             Loader.Load(Loader.Scene.StartMenü);
         });
         createLobbyButton.onClick.AddListener(() => {
             lobbyCreateUI.Show();
         });
         quickJoinButton.onClick.AddListener(() => {
-            GameLobby.Instance.QuickJoin();
         });
         joinCodeButton.onClick.AddListener(() => {
-            GameLobby.Instance.JoinWithCode(joinCodeInputField.text);
         });
 
         lobbyTemplate.gameObject.SetActive(false);
@@ -45,14 +42,10 @@ public class LobbyUI : MonoBehaviour {
             GameMultiplayer.Instance.SetPlayerName(newText);
         });
 
-        GameLobby.Instance.OnLobbyListChanged += GameLobby_OnLobbyListChanged;
         UpdateLobbyList(new List<Lobby>());
     }
 
-    private void GameLobby_OnLobbyListChanged(object sender, GameLobby.OnLobbyListChangedEventArgs e) {
-        UpdateLobbyList(e.lobbyList);
-    }
-
+    
     private void UpdateLobbyList(List<Lobby> lobbyList) {
         if (lobbyContainer != null)
         {

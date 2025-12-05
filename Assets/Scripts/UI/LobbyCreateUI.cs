@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class LobbyCreateUI : MonoBehaviour {
@@ -9,16 +10,28 @@ public class LobbyCreateUI : MonoBehaviour {
     [SerializeField] private Button createPublicButton;
     [SerializeField] private Button createPrivateButton;
     [SerializeField] private TMP_InputField lobbyNameInputField;
-    private void Awake() {
-        createPublicButton.onClick.AddListener(() => {
-            GameLobby.Instance.CreateLobby(lobbyNameInputField.text, false);
-        });
-        createPrivateButton.onClick.AddListener(() => {
-            GameLobby.Instance.CreateLobby(lobbyNameInputField.text, true);
-        });
-        closeButton.onClick.AddListener(() => {
+    private void Awake()
+    {
+        closeButton.onClick.AddListener(() =>
+        {
             Hide();
         });
+
+        createPublicButton.onClick.AddListener(() =>
+        {
+            LoadCharacterScene();
+        });
+        createPrivateButton.onClick.AddListener(() =>
+        {
+            LoadCharacterScene();
+        });
+
+    }
+
+
+    private void LoadCharacterScene()
+    { 
+         SceneManager.LoadScene("CharacterSelectScene");
     }
 
     private void Start() {

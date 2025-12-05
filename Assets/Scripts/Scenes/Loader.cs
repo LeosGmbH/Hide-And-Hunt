@@ -12,7 +12,8 @@ public static class Loader {
         LoadingScene,
         LobbyScene,
         CharacterSelectScene,
-        InGame
+        InGame,
+        InGameKiller
     }
 
 

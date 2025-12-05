@@ -16,7 +16,6 @@ public class GamePauseUI : MonoBehaviour
     }
     public void DisconnectFromLobby()
     {
-        GameLobby.Instance.DisconnectAndLeaveLobby();
         Loader.Load(Loader.Scene.StartMenü);
     }
 }

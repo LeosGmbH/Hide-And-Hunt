@@ -33,7 +33,7 @@ namespace Assets.Scripts.UI
             UpdatePlayerListClientRpc();
         }
 
-        [ClientRpc]
+        
         private void UpdatePlayerListClientRpc()
         {
             // Finde alle Spieler und aktualisiere die UI
@@ -43,19 +43,7 @@ namespace Assets.Scripts.UI
             foreach (var text in survivorNameTexts) text.enabled = false;
             foreach (var text in survivorStateTexts) text.enabled = false;
 
-            int anz = 0;
-            foreach (GameObject survivor in survivors)
-            {
-                NetworkObject networkObject = survivor.GetComponentInParent<NetworkObject>();
-                if (networkObject != null)
-                {
-                    PlayerData playerData = GameMultiplayer.Instance.GetPlayerDataFromPlayerIndex((int)networkObject.OwnerClientId);
-                    survivorNameTexts[anz].enabled = true;
-                    survivorNameTexts[anz].text = playerData.playerName + "";
-                    survivorStateTexts[anz].enabled = true;
-                    anz++;
-                }
-            }
+           
 
             // Killer-Information aktualisieren
             GameObject killer = GameObject.FindGameObjectWithTag("KillerTextTag");
@@ -63,17 +51,7 @@ namespace Assets.Scripts.UI
             killerHeadline.enabled = false;
             killerNameText.enabled = false;
 
-            if (killer != null)
-            {
-                NetworkObject killerNetworkObject = killer.GetComponentInParent<NetworkObject>();
-                if (killerNetworkObject != null)
-                {
-                    PlayerData playerData = GameMultiplayer.Instance.GetPlayerDataFromPlayerIndex((int)killerNetworkObject.OwnerClientId);
-                    killerHeadline.enabled = true;
-                    killerNameText.enabled = true;
-                    killerNameText.text = playerData.playerName + "";
-                }
-            }
+            
         }
 
         void Update()
@@ -82,13 +60,13 @@ namespace Assets.Scripts.UI
             UpdateHealthTextClientRpc();
         }
 
-        [ServerRpc(RequireOwnership = false)]
+        
         public void UpdateHealthTextServerRpc()
         {
             UpdateHealthTextClientRpc();  // Auf allen Clients ausführen
         }
 
-        [ClientRpc]
+        
         private void UpdateHealthTextClientRpc()
         {
             if (survivors != null)

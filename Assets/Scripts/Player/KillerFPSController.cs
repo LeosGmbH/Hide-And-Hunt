@@ -8,7 +8,7 @@ using UnityEngine;
 namespace Assets.Scripts.Player
 {
     [RequireComponent(typeof(CharacterController))]
-    public class KillerFPSController : NetworkBehaviour
+    public class KillerFPSController : MonoBehaviour
     {
         public static void ResetStaticData()
         {
@@ -51,10 +51,6 @@ namespace Assets.Scripts.Player
 
         private void Start()
         {
-            if (IsOwner)
-            {
-                GetComponentInChildren<Light>().enabled = false;
-            }
             // PlayerData playerData = GameMultiplayer.Instance.GetPlayerDataFromClientId(OwnerClientId);
             if (killerStateManager == null)
             {
@@ -63,18 +59,7 @@ namespace Assets.Scripts.Player
             killerAnim = GetComponentInChildren<Animator>();
             characterController = GetComponent<CharacterController>();
 
-            if (!IsLocalPlayer)
-            {
-                tpCamera.SetActive(false);
-                freeLookCamera.SetActive(false);
-                playerCamera.gameObject.SetActive(false);
-                return;
-            }
-
-            if (IsLocalPlayer)
-            {
-                menuScreen = FindObjectOfType<InGameMenuScreen>();
-            }
+            menuScreen = FindObjectOfType<InGameMenuScreen>();
 
             if (freeLookCamera != null)
             {
@@ -93,24 +78,12 @@ namespace Assets.Scripts.Player
             Cursor.visible = false;
         }
 
-        public override void OnNetworkSpawn()
-        {
-            if (IsOwner)
-            {
-                LocalInstance = this;
-            }
-            // transform.position = spawnPositionList[KitchenGameMultiplayer.Instance.GetPlayerDataIndexFromClientId(OwnerClientId)];
-            OnAnyPlayerSpawned?.Invoke(this, EventArgs.Empty);
-        }
+
 
         private void Update()
         {
-            if (!IsOwner)
-            {
-                tpCamera.GetComponent<Camera>().enabled = false;
-                playerCamera.GetComponent<Camera>().enabled = false;
-                return;
-            }
+            //tpCamera.GetComponent<Camera>().enabled = false;
+            //playerCamera.GetComponent<Camera>().enabled = false;
 
             if (killerStateManager.currentKillerState == KillerState.Carry && !menuScreen.GetIsPaused())
             {
@@ -130,10 +103,6 @@ namespace Assets.Scripts.Player
             }
 
             HandleMovementAndRotation();
-        }
-        public NetworkObject GetNetworkObject()
-        {
-            return NetworkObject;
         }
 
         private void HandleMovementAndRotation()
@@ -232,7 +201,6 @@ namespace Assets.Scripts.Player
 
         private ulong CheckforDeathChair()
         {
-            if (!IsOwner) return 0;
 
             Vector3 rayOrigin = playerCamera.transform.position;
             Vector3 rayDirection = playerCamera.transform.forward;
@@ -245,7 +213,6 @@ namespace Assets.Scripts.Player
         }
         private void CheckForSurvivor(bool mode)
         {
-            if (!IsOwner) return;
 
             Vector3 rayOrigin = playerCamera.transform.position;
             Vector3 rayDirection = playerCamera.transform.forward;
@@ -280,12 +247,12 @@ namespace Assets.Scripts.Player
                 Debug.Log("Kein Treffer.");
             }
         }
-        [ServerRpc]
+        
         private void AttackSurvivorServerRpc(ulong survivorNetworkId)
         {
             AttackSurvivorClientRpc(survivorNetworkId);
         }
-        [ClientRpc]
+        
         private void AttackSurvivorClientRpc(ulong survivorNetworkId)
         {
             NetworkObject survivorObject = NetworkManager.Singleton.SpawnManager.SpawnedObjects[survivorNetworkId];
@@ -298,12 +265,12 @@ namespace Assets.Scripts.Player
             }
         }
 
-        [ServerRpc]
+        
         private void InteractWithSurvivorServerRpc(ulong survivorNetworkId, ulong deathChairNetworkId)
         {
             InteractWithSurvivorClientRpc(survivorNetworkId, deathChairNetworkId);
         }
-        [ClientRpc]
+        
         private void InteractWithSurvivorClientRpc(ulong survivorNetworkId, ulong deathChairNetworkId)
         {
             NetworkObject survivorObject = NetworkManager.Singleton.SpawnManager.SpawnedObjects[survivorNetworkId];

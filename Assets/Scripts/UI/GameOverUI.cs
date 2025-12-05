@@ -9,7 +9,6 @@ public class GameOverUI : MonoBehaviour {
     [SerializeField] private Button mainMenuButton;
     private void Awake() {
         mainMenuButton.onClick.AddListener(() => {
-            GameLobby.Instance.DisconnectAndLeaveLobby();
             Loader.Load(Loader.Scene.StartMenü);
         });
     }
@@ -18,11 +17,6 @@ public class GameOverUI : MonoBehaviour {
         Hide();
     }
 
-    private void Show() {
-        gameObject.SetActive(true);
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
-    }
 
     private void Hide() {
         gameObject.SetActive(false);

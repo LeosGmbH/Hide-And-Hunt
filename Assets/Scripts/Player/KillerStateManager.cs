@@ -17,7 +17,7 @@ namespace Assets.Scripts.Player
         Injured
     }
 
-    public class KillerStateManager : NetworkBehaviour
+    public class KillerStateManager : MonoBehaviour
     {
         //health state
         public KillerHealthState currentHealthState = KillerHealthState.Healthy;

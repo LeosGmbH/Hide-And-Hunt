@@ -7,14 +7,11 @@ using UnityEngine.UI;
 
 namespace Assets.Scripts
 {
-    public class EscapeDoor : NetworkBehaviour
+    public class EscapeDoor : MonoBehaviour
     {
         public void OpenDoors()
         {
-            if (IsServer)
-            {
-                transform.SetLocalPositionAndRotation(new Vector3(24.6f, 0.413f, -19.7f), Quaternion.Euler(-85, -90, 0));
-            }
+            transform.SetLocalPositionAndRotation(new Vector3(24.6f, 0.413f, -19.7f), Quaternion.Euler(-85, -90, 0));
         }
 
         [SerializeField] private float repairSpeedPerPlayer = 2f; // Fortschritt pro Sekunde und Spieler
@@ -44,7 +41,7 @@ namespace Assets.Scripts
 
         private void Update()
         {
-            if (RepairingPlayers.Value > 0 && !IsOpened.Value&& IsEnabled.Value)
+            if (RepairingPlayers.Value > 0 && !IsOpened.Value && IsEnabled.Value)
             {
                 Progress.Value += repairSpeedPerPlayer * Time.deltaTime;
 
@@ -56,7 +53,7 @@ namespace Assets.Scripts
                 }
             }
 
-            if (IsServer && Progress.Value > 0 && RepairingPlayers.Value == 0 && !IsOpened.Value) //progress r�ckg�ngig machen
+            if (Progress.Value > 0 && RepairingPlayers.Value == 0 && !IsOpened.Value) //progress r�ckg�ngig machen
             {
                 DecayProgress();
             }
@@ -66,14 +63,14 @@ namespace Assets.Scripts
             }
         }
 
-        [ServerRpc(RequireOwnership = false)]
+        
         public void SetCanOpenTrueServerRpc(ServerRpcParams rpcParams = default)
         {
-            IsEnabled.Value=true;
+            IsEnabled.Value = true;
         }
 
 
-        [ClientRpc]
+        
         private void SetCanvasVisibilityClientRpc(bool isVisible)
         {
             progressBarCanvas.gameObject.SetActive(isVisible);
@@ -88,7 +85,7 @@ namespace Assets.Scripts
             }
         }
 
-        [ServerRpc(RequireOwnership = false)]
+        
         public void StartOpeningServerRpc(ServerRpcParams rpcParams = default)
         {
             if (!IsOpened.Value)
@@ -98,12 +95,12 @@ namespace Assets.Scripts
                 UpdateOpeningPlayersClientRpc(RepairingPlayers.Value);
             }
         }
-        [ClientRpc]
+        
         private void UpdateOpeningPlayersClientRpc(int currentRepairingPlayers)
         {
             RepairingPlayers.Value = currentRepairingPlayers;
         }
-        [ServerRpc(RequireOwnership = false)]
+        
         public void StopOpeningServerRpc(ServerRpcParams rpcParams = default)
         {
             if (RepairingPlayers.Value > 0)
@@ -113,7 +110,7 @@ namespace Assets.Scripts
         }
 
 
-        [ClientRpc]
+        
         private void UpdateProgressBarClientRpc(float progress)
         {
             if (progressBarSlider != null)
@@ -146,7 +143,7 @@ namespace Assets.Scripts
         private void OnTriggerEnter(Collider other)
         {
             //if (!IsServer) return; // Nur der Server verarbeitet den Trigger
-            
+
             // Prüfe, ob das Objekt ein SurvivorFPSController hat
             SurvivorFPSController survivor = other.GetComponent<SurvivorFPSController>();
             if (survivor != null)
@@ -155,7 +152,7 @@ namespace Assets.Scripts
             }
         }
 
-        [ClientRpc]
+        
         private void NotifyPlayerEscapeClientRpc(ulong playerId)
         {
             Debug.Log($"Spieler {playerId} hat die Flucht geschafft (Client-seitig sichtbar).");

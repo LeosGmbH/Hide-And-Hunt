@@ -1,5 +1,7 @@
 #if UNITY_EDITOR
+using System.Collections.Generic;
 using System.Diagnostics;
+using Unity.Netcode;
 using UnityEditor;
 #endif
 
@@ -18,9 +20,13 @@ namespace Assets.Scripts
 
         [SerializeField] private Button optionButton;
         [SerializeField] private Slider volumeSlider;
+
+
+
         private MusicManager musicManager;
 
         [SerializeField] private bool isPaused = false;
+
 
         void Awake()
         {
@@ -104,7 +110,6 @@ namespace Assets.Scripts
         public void RestartToFirstScene()
         {
             SceneManager.LoadScene(0);
-            //TODO: Fix Networking
         }
 
         public void SetVolume(float volume) {

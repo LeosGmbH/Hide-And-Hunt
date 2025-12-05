@@ -9,7 +9,7 @@ using UnityEngine.InputSystem;
 namespace Assets.Scripts.Player
 {
     [RequireComponent(typeof(CharacterController))]
-    public class SurvivorFPSController : NetworkBehaviour
+    public class SurvivorFPSController : MonoBehaviour
     {
         public static void ResetStaticData()
         {
@@ -53,8 +53,6 @@ namespace Assets.Scripts.Player
         private void Start()
         {
 
-            if (IsLocalPlayer)  //Billboard von Generator Canvas 
-            {
                 menuScreen=FindObjectOfType<InGameMenuScreen>();
                 GameObject[] generators = GameObject.FindGameObjectsWithTag("Generator");
                 foreach (GameObject generator in generators)
@@ -70,7 +68,6 @@ namespace Assets.Scripts.Player
                         }
                     }
                 }
-            }
 
 
             holdSurvivorRoot = GameObject.Find("HoldSurvivorRoot");
@@ -86,13 +83,6 @@ namespace Assets.Scripts.Player
             playerAnim = GetComponentInChildren<Animator>();
             characterController = GetComponent<CharacterController>();
 
-            if (!IsLocalPlayer)
-            {
-                tpCamera.SetActive(false);
-                freeLookCamera.SetActive(false);
-                playerCamera.gameObject.SetActive(false);
-                return;
-            }
 
             if (freeLookCamera != null)
             {
@@ -107,24 +97,9 @@ namespace Assets.Scripts.Player
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
         }
-        public override void OnNetworkSpawn()
-        {
-            if (IsOwner)
-            {
-                LocalInstance = this;
-            }
-            // transform.position = spawnPositionList[KitchenGameMultiplayer.Instance.GetPlayerDataIndexFromClientId(OwnerClientId)];
-            OnAnyPlayerSpawned?.Invoke(this, EventArgs.Empty);
-        }
 
         private void Update()
         {
-            if (!IsOwner)
-            {
-                tpCamera.GetComponent<Camera>().enabled = false;
-                playerCamera.GetComponent<Camera>().enabled = false;
-                return;
-            }
             if (playerStateManager.currentPlayerState == PlayerState.Prop)
             {
                 playerPropManager.HandlePropMovement();
@@ -168,7 +143,6 @@ namespace Assets.Scripts.Player
         }
         public void clearAnims()
         {
-            if (!IsLocalPlayer) return;
             playerAnim.SetBool("hanging", false);
             playerAnim.SetBool("sitting", false);
             playerAnim.SetBool("down", false);
@@ -179,7 +153,6 @@ namespace Assets.Scripts.Player
         }
         public void setAnim(string name, bool mode)
         {
-            if (!IsLocalPlayer) return;
             playerAnim.SetBool(name, mode);
         }
 
@@ -228,7 +201,7 @@ namespace Assets.Scripts.Player
                 jumpPower = 8f;
             }
         }
-        [ServerRpc(RequireOwnership = false)]
+        
         public void DestroyPlayerServerRpc()
         {
             DestroyPlayerClientRpc();
@@ -236,14 +209,10 @@ namespace Assets.Scripts.Player
         }
 
         // Client-RPC, um die Transformation zu synchronisieren
-        [ClientRpc]
+        
         private void DestroyPlayerClientRpc()
         {
             Destroy(gameObject);
-        }
-        public NetworkObject GetNetworkObject()
-        {
-            return NetworkObject;
         }
 
         public void SetCanMove(bool move)
