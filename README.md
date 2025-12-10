@@ -84,44 +84,30 @@ Sie können Hide and Hunt auf zwei Arten testen, je nach gewünschtem Umfang und
   - Dieser Build bietet die volle Spielerfahrung, einschließlich der kompletten Online-Funktionalität.
 
 
-
-
-
 <!-- How to Play -->
 ## How to Play
-### Webseite Demo:
-  1. Demo starten
-  2. Play drücken
-  3. Create Lobby
-  4. wähle ob du als Killer oder als Überlebender spielen willst
 
+1. Demo starten  
+2. Auf **Play** klicken  
+3. Auf **Create Lobby** klicken  
 
+### Website Demo
 
+4. Wähle, ob du als **Killer** oder **Überlebender** spielen möchtest.  
 
+### Windows Build – Einzelspieler
 
+4. Wähle einen Charakter.  
+5. Klicke auf **Ready**.  
 
-<!-- CONTRIBUTING -->
-## Contributing
+### Windows Build – Mehrspieler
 
-Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
-
-If you have a suggestion that would make this better, please fork the repo and create a pull request. You can also simply open an issue with the tag "enhancement".
-Don't forget to give the project a star! Thanks again!
-
-1. Fork the Project
-2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the Branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-
-<!-- LICENSE -->
-## License
-
-Distributed under the Unlicense License. See `LICENSE.txt` for more information.
+4. Wähle einen Charakter.  
+5. Warte, bis der andere Spieler beigetreten ist  
+   *oder* öffne das Spiel in zwei Fenstern und tritt deiner eigenen Lobby bei.  
+6. Klicke auf **Ready**.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
-
 
 
 <!-- MARKDOWN LINKS & IMAGES -->
