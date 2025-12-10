@@ -1,7 +1,7 @@
 <h1 align="center"> Hide and Hunt </h1> <br> <!--Title -->
 <p align="center">  <!--image -->
   <a">
-    <img alt="Hide And Hunt" title="Hide And Hunt" src="https://github.com/062Leo/Hide-And-Hunt/blob/main/Assets/BuildIcon.png" width="350">
+    <img alt="Hide And Hunt" title="Hide And Hunt" src="https://github.com/062Leo/Hide-And-Hunt/blob/main/Assets/Bilder/BuildIcon.png" width="350">
   </a>
 </p>
 <a id="readme-top"></a> <!-- back to top ziel -->
@@ -15,7 +15,6 @@
     <li><a href="#steuerung">Steuerung</a></li>
     <li><a href="#die-map">Die Map</a></li>
     <li><a href="#entwicklungsstatus">Entwicklungsstatus</a></li>
-    <li><a href="#verwendete-assets">Verwendete Assets</a></li>
   </ol>
 </details>
 
@@ -131,10 +130,13 @@ Sie können Hide and Hunt auf zwei Arten testen, je nach gewünschtem Umfang und
 - Man kann sich nur in Objekte verwandeln, die eine rote Outline haben, wenn man sie anvisiert.
 
 ## Die Map
+<p align="center">  <!--image -->
+  <a">
+    <img alt="Map" title="Map" src="https://github.com/062Leo/Hide-And-Hunt/blob/main/Assets/Bilder/Map.png" width="450">
+  </a>
+</p>
 
-![Map-Übersicht](Assets/Bilder/Map.png)
-
-**Legende**
+**Map Legende**
 
 - **Rote Linie**: Begrenzung der spielbaren Map
 - **Gelbe Kreuze**: Positionen der Generatoren
@@ -153,14 +155,6 @@ Während der Entwicklung waren vor allem Multiplayer und Networking sehr herausf
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
-## Verwendete Assets
-
-- Quick Outline – Chris Nolet  
-  - https://assetstore.unity.com/packages/tools/particles-effects/quick-outline-115488
-- Banana Man – Banana Yellow Games
-- POLYGON Farm – Synty
-- Low Poly Dungeons Lite
-- Low Poly Simple Medieval Props
 
 
 <!-- MARKDOWN LINKS & IMAGES -->
